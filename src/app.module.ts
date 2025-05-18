@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DynamicModule } from './dynamic/dynamic.module';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { DynamicModule } from './dynamic/dynamic.module';
       }),
       inject: [ConfigService],
     }),
-    DynamicModule,
   ],
 })
 export class AppModule {}
