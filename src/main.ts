@@ -9,10 +9,11 @@ async function bootstrap() {
     .setTitle('Saguaro API')
     .setDescription('Documentación de la API de Saguaro')
     .setVersion('1.0')
+    .addTag('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('/docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
