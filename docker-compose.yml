@@ -1,7 +1,9 @@
+version: '3.8'
+
 services:
-  mongo:
+  mongodb:
     image: mongo:latest
-    container_name: saguaro_api_bd
+    container_name: saguaro-mongodb
     restart: always
     ports:
       - "${MONGO_PORT}:27017"
@@ -11,6 +13,31 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
     volumes:
       - mongo_data:/data/db
+    networks:
+      - saguaro-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: saguaro-api
+    restart: always
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_PORT=${MONGO_PORT}
+    depends_on:
+      - mongodb
+    networks:
+      - saguaro-network
+
+networks:
+  saguaro-network:
+    driver: bridge
 
 volumes:
   mongo_data:
